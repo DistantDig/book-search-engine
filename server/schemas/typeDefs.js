@@ -7,7 +7,7 @@ const typeDefs = `
         bookId: String
         image: String
         link: String
-        title: String!
+        title: String
     }
 
     type User {
@@ -15,11 +15,12 @@ const typeDefs = `
         username: String
         email: String
         password: String
-        savedBooks: [Book]!
+        savedBooks: [Book]
     }
 
     type Query {
-        user(userId: ID!): User!
+        users: [User]
+        user(userId: ID!): User
     }
 
     type Mutation {
