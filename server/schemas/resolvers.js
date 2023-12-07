@@ -1,4 +1,5 @@
 const { User } = require('../models');
+//import auth
 
 const resolvers = {
     Query: {
@@ -14,24 +15,32 @@ const resolvers = {
             return { user };
         },
 
-        saveBook: async (parent, { userId, book }) => {
-            const user = await User.findOneAndUpdate(
-                { _id: userId },
-                { $addToSet: { savedBooks: book }},
-                { new: true, runValidators: true }
-            );
-
-            return { user };
+        //add login mutation
+        
+        saveBook: async (parent, { userId, book }, context) => {
+            if (context.user) {
+                const user = await User.findOneAndUpdate(
+                    { _id: userId },
+                    { $addToSet: { savedBooks: book }},
+                    { new: true, runValidators: true }
+                );
+    
+                return { user };
+            }
+            //throw AuthenticationError;
         },
 
         deleteBook: async (parent, { userId, book }, context) => {
-            const user = await User.findOneAndUpdate(
-                { _id: context.user._id },
-                { $pull: { savedBooks: book }},
-                { new: true }
-            );
-
-            return { user };
+            if (context.user) {
+                const user = await User.findOneAndUpdate(
+                    { _id: context.user._id },
+                    { $pull: { savedBooks: book }},
+                    { new: true }
+                );
+    
+                return { user };
+            }
+            //throw AuthenticationError;
         }
     }
 };

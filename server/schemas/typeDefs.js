@@ -1,3 +1,4 @@
+//Add Auth type and login mutation
 const typeDefs = `
     type Book {
         _id: ID
