@@ -1,10 +1,9 @@
 //Add Auth type and login mutation
 const typeDefs = `
     type Book {
-        _id: ID
+        bookId: ID!
         authors: [String]
         description: String
-        bookId: String
         image: String
         link: String
         title: String
@@ -14,19 +13,26 @@ const typeDefs = `
         _id: ID
         username: String
         email: String
-        password: String
         savedBooks: [Book]
+        bookCount: Int
+    }
+
+    type Auth {
+        token: ID!
+        user: User
     }
 
     type Query {
         users: [User]
         user(userId: ID!): User
+        me: User
     }
 
     type Mutation {
-        createUser(username: String!, email: String!, password: String!): User
-        saveBook(userId: ID!, book: String!): User
-        deleteBook(userId: ID!, book: String!): User
+        createUser(username: String!, email: String!, password: String!): Auth
+        login(email: String!, password: String!): Auth
+        saveBook(bookId: String!, authors: [String], description: String, image: String, title: String): User
+        deleteBook(bookId: ID!): User
     }
 `;
 
