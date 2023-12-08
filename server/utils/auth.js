@@ -10,7 +10,7 @@ module.exports = {
     extensions: {
       code: "UNAUTHENTICATED"
     }
-  });
+  }),
 
   // function for our authenticated routes
   authMiddleware: function ({ req }) {
