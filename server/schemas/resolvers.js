@@ -10,8 +10,11 @@ const resolvers = {
             return User.findOne({ _id: userId });
         },
         me: async (parent, args, context) => {
+            // console.log(context.user);
             if (context.user) {
-                return User.findOne({ _id: context.user._id });
+                const data = await User.findOne({ _id: context.user._id }).select('-__v');
+                // console.log("post:",data);
+                return data;
             }
             throw AuthenticationError;
         }
@@ -41,30 +44,29 @@ const resolvers = {
             return { token, user };
         },
         
-        saveBook: async (parent, { userId, bookId }, context) => {
+        saveBook: async (parent, args, context) => {
+            
             if (context.user) {
-                const book = await Book.findOne({ _id: bookId });
-                const user = await User.findOneAndUpdate(
-                    { _id: userId },
-                    { $addToSet: { savedBooks: book }},
-                    { new: true, runValidators: true }
+                console.log(context.user);
+                // const book = await Book.findOne({ _id: bookId });
+                return await User.findOneAndUpdate(
+                    { _id: context.user._id },
+                    { $addToSet: { savedBooks: {...args} }},
+                    { new: true }
                 );
-    
-                return { user };
             }
             throw AuthenticationError;
         },
 
-        deleteBook: async (parent, { userId, bookId }, context) => {
+        deleteBook: async (parent, args, context) => {
+            console.log('args', args);
             if (context.user) {
-                const book = await Book.findOne({ _id: bookId });
-                const user = await User.findOneAndUpdate(
+                // const book = await Book.findOne({ _id: bookId });
+                return await User.findOneAndUpdate(
                     { _id: context.user._id },
-                    { $pull: { savedBooks: book }},
+                    { $pull: { savedBooks: { bookId: args.bookId } }},
                     { new: true }
                 );
-    
-                return { user };
             }
             throw AuthenticationError;
         }
