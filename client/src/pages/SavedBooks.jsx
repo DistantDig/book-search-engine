@@ -1,3 +1,8 @@
+import { useMutation } from '@apollo/client';
+
+import { QUERY_ME } from '../utils/queries';
+import { DELETE_BOOK } from '../utils/mutations';
+
 import { useState, useEffect } from 'react';
 import {
   Container,
@@ -7,7 +12,7 @@ import {
   Col
 } from 'react-bootstrap';
 
-import { getMe, deleteBook } from '../utils/API';
+// import { getMe, deleteBook } from '../utils/API';
 import Auth from '../utils/auth';
 import { removeBookId } from '../utils/localStorage';
 
